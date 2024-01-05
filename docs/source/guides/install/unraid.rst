@@ -2,10 +2,15 @@ Unraid
 --------------
 You can install our :unraid:`unraid community apps <community/apps?q=ytdl-sub#r>` through the  `Unraid Community Apps plugin <https://unraid.net/community/apps>`_.
 
+.. tab-set:: 
 
-If you installed the ``ytdl-sub-gui`` app, the code-server will be running at http://localhost:8443 (replace ``localhost`` with the IP of the computer running Unraid if you aren't trying to access ``ytdl-sub`` on that computer). Open this page in a browser to access and interact with ``ytdl-sub``. 
+  .. tab-item:: ytdl-sub-gui (GUI)
 
-If you installed the ``ytdl-sub`` app (headless), open the normal app-specific console to access and interact with ``ytdl-sub``. Once open, you must first run ``su abc -s /bin/bash`` to change to the non-root user. You can confirm that this command worked by running ``whoami`` and verifying that the result is ``abc``.
+    After install, the code-server will be running at http://localhost:8443 (replace ``localhost`` with the IP of the computer running Unraid if you aren't trying to access ``ytdl-sub`` on that computer). Open this page in a browser to access and interact with ``ytdl-sub``. 
+
+  .. tab-item:: ytdl-sub (Headless)
+
+    After install, open the normal app-specific console to access and interact with ``ytdl-sub``. Once open, you must first run ``su abc -s /bin/bash`` to change to the non-root user. You can confirm that this command worked by running ``whoami`` and verifying that the result is ``abc``.
 
 
 .. warning:: 
