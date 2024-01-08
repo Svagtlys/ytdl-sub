@@ -17,14 +17,14 @@ The ``ytdl-sub`` Docker images use :lsio:`LSIO-based images <\ >` and install yt
 GUI Image
 ---------
 
-The GUI image uses LSIO's :lsio-gh:`docker-code-server image <\ >` for its base image. More info on other code-server environment variables can be found within its documentation.
+The GUI image uses LSIO's :lsio-gh:`docker-code-server` for its base image. More info on other code-server environment variables can be found within its documentation.
 
 After starting, the code-server will be running at http://localhost:8443. Open this page in a browser to access and interact with ``ytdl-sub``.
 
 Headless Image
 --------------
 
-The headless image uses LSIO's :lsio-gh:`docker-baseimage-alpine image <\ >` for its base image. Execute the following command to access and interact with ``ytdl-sub``:
+The headless image uses LSIO's :lsio-gh:`docker-baseimage-alpine` for its base image. Execute the following command to access and interact with ``ytdl-sub``:
 
 .. code-block:: bash
 
@@ -49,22 +49,22 @@ Docker Compose is an easy "set it and forget it" install method. Follow the inst
       :caption: compose.yaml
 
       services:
-      ytdl-sub:
-        image: ghcr.io/jmbannon/ytdl-sub-gui:latest
-        container_name: ytdl-sub
-        environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/Los_Angeles
-        volumes:
-          - <path/to/ytdl-sub/config>:/config
-          - <path/to/tv_shows>:/tv_shows  # optional
-          - <path/to/movies>:/movies  # optional
-          - <path/to/music_videos>:/music_videos  # optional
-          - <path/to/music>:/music  # optional
-        ports:
-          - 8443:8443
-        restart: unless-stopped
+        ytdl-sub:
+          image: ghcr.io/jmbannon/ytdl-sub-gui:latest
+          container_name: ytdl-sub
+          environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=America/Los_Angeles
+          volumes:
+            - <path/to/ytdl-sub/config>:/config
+            - <path/to/tv_shows>:/tv_shows  # optional
+            - <path/to/movies>:/movies  # optional
+            - <path/to/music_videos>:/music_videos  # optional
+            - <path/to/music>:/music  # optional
+          ports:
+            - 8443:8443
+          restart: unless-stopped
 
   .. tab-item:: Headless Image
 
@@ -72,21 +72,21 @@ Docker Compose is an easy "set it and forget it" install method. Follow the inst
       :caption: compose.yaml
 
       services:
-      ytdl-sub:
-        image: ghcr.io/jmbannon/ytdl-sub:latest
-        container_name: ytdl-sub
-        environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/Los_Angeles
-          - DOCKER_MODS=linuxserver/mods:universal-cron
-        volumes:
-          - <path/to/ytdl-sub/config>:/config
-          - <path/to/tv_shows>:/tv_shows  # optional
-          - <path/to/movies>:/movies  # optional
-          - <path/to/music_videos>:/music_videos  # optional
-          - <path/to/music>:/music  # optional
-        restart: unless-stopped
+        ytdl-sub:
+          image: ghcr.io/jmbannon/ytdl-sub:latest
+          container_name: ytdl-sub
+          environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=America/Los_Angeles
+            - DOCKER_MODS=linuxserver/mods:universal-cron
+          volumes:
+            - <path/to/ytdl-sub/config>:/config
+            - <path/to/tv_shows>:/tv_shows  # optional
+            - <path/to/movies>:/movies  # optional
+            - <path/to/music_videos>:/music_videos  # optional
+            - <path/to/music>:/music  # optional
+          restart: unless-stopped
 
 Device Passthrough
 ~~~~~~~~~~~~~~~~~~~
