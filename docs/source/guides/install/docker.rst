@@ -22,6 +22,7 @@ GUI Image
 The GUI image uses LSIO's :lsio-gh:`docker-code-server` for its base image. More info on other code-server environment variables can be found within its documentation.
 
 After starting, the code-server will be running at http://localhost:8443. Open this page in a browser to access and interact with ``ytdl-sub``.
+After starting, the code-server will be running at http://localhost:8443. Open this page in a browser to access and interact with ``ytdl-sub``.
 
 Headless Image
 --------------
