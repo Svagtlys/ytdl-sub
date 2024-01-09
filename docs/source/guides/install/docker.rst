@@ -14,6 +14,8 @@ The ``ytdl-sub`` Docker images use :lsio:`LSIO-based images <\ >` and install yt
 
     :ref:`Docker Compose <guides/install/docker:install with docker compose>` is the recommended way of setting up a ``ytdl-sub`` docker container.
 
+:ref:`Troubleshooting your Docker install <guides/install/docker:troubleshooting>`
+
 GUI Image
 ---------
 
@@ -57,11 +59,11 @@ Docker Compose is an easy "set it and forget it" install method. Follow the inst
             - PGID=1000
             - TZ=America/Los_Angeles
           volumes:
-            - <path/to/ytdl-sub/config>:/config
-            - <path/to/tv_shows>:/tv_shows  # optional
-            - <path/to/movies>:/movies  # optional
-            - <path/to/music_videos>:/music_videos  # optional
-            - <path/to/music>:/music  # optional
+            - path/to/ytdl-sub/config:/config
+            - path/to/tv_shows:/tv_shows  # optional
+            - path/to/movies:/movies  # optional
+            - path/to/music_videos:/music_videos  # optional
+            - path/to/music:/music  # optional
           ports:
             - 8443:8443
           restart: unless-stopped
@@ -81,11 +83,11 @@ Docker Compose is an easy "set it and forget it" install method. Follow the inst
             - TZ=America/Los_Angeles
             - DOCKER_MODS=linuxserver/mods:universal-cron
           volumes:
-            - <path/to/ytdl-sub/config>:/config
-            - <path/to/tv_shows>:/tv_shows  # optional
-            - <path/to/movies>:/movies  # optional
-            - <path/to/music_videos>:/music_videos  # optional
-            - <path/to/music>:/music  # optional
+            - path/to/ytdl-sub/config:/config
+            - path/to/tv_shows:/tv_shows  # optional
+            - path/to/movies:/movies  # optional
+            - path/to/music_videos:/music_videos  # optional
+            - path/to/music:/music  # optional
           restart: unless-stopped
 
 Device Passthrough
@@ -147,9 +149,104 @@ If you prefer to only run the container once, you can use the CLI command instea
     -e PGID=1000 \
     -e TZ=America/Los_Angeles \
     -p 8443:8443 \
-    -v <path/to/ytdl-sub/config>:/config \
-    -v <OPTIONAL/path/to/tv_shows>:/tv_shows \
-    -v <OPTIONAL/path/to/movies>:/movies \
-    -v <OPTIONAL/path/to/music_videos>:/music_videos \
-    -v <OPTIONAL/path/to/music>:/music \
+    -v path/to/ytdl-sub/config:/config \
+    -v OPTIONAL/path/to/tv_shows:/tv_shows \
+    -v OPTIONAL/path/to/movies:/movies \
+    -v OPTIONAL/path/to/music_videos:/music_videos \
+    -v OPTIONAL/path/to/music:/music \
     ghcr.io/jmbannon/ytdl-sub-gui:latest
+
+
+Troubleshooting
+---------------
+
+Find your error message below to troubleshoot your issue with the Docker install.
+
+``PermissionError: [Errno 13] Permission denied``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Directory Name
+^^^^^^^^^^^^^^
+
+From the computer that you've installed the container on, but not within the container, do the mapped folders exist?
+
+Using the folder paths from the install instructions, the paths to check would be:
+
+.. code-block:: shell
+
+  cd path/to/ytdl-sub/config
+  cd path/to/tv_shows
+  cd path/to/movies
+  cd path/to/music_videos
+  cd path/to/music
+
+If you're able to ``cd`` into all of these, then continue to the next step. If not, run the following command for each folder that does not exist:
+
+.. code-block:: shell
+
+  mkdir -p path/to/folder
+
+Directory Access
+^^^^^^^^^^^^^^^^
+
+From the computer that you've installed the container on, but not within the container, does your user have access to the folders?
+
+Using the folder paths from the install instructions, the commands to check would be:
+
+.. code-block:: shell
+
+  ls -ld path/to/ytdl-sub/config
+  ls -ld path/to/tv_shows
+  ls -ld path/to/movies
+  ls -ld path/to/music_videos
+  ls -ld path/to/music
+
+Verify that the owner and group (columns 3 and 4) are the same as the user you're logged in as. To confirm which user and group you're using:
+
+.. code-block:: shell
+
+  whoami
+  groups
+
+If the owner does not match your user, or the group is not in your list of groups, you will need to change the permissions, where ``user`` is your user from the above command, and ``group`` is the first group in the list from the above command. You will need to run this command for each folder that is having permission issues.
+
+.. code-block:: shell
+
+  chown -R user:group path/to/folder
+
+PGID and PUID
+^^^^^^^^^^^^^
+
+From the computer that you've installed the container on, but not within the container, what is the correct PUID and PGID to access the folders?
+
+You need to check the PUID and PGID, where ``user`` is your user from the above step, and ``group`` is the first group in the list from the above step. 
+
+.. code-block:: shell
+
+  id 
+
+The output should look like:
+
+``uid=####(user) gid=####(group) ...``
+
+The first number, between ``uid=`` and ``(user)`` is your PUID. The second number, between ``gid=`` and ``(group)`` is your PGID.
+
+In your compose file, confirm that the highlighted lines have the correct numbers for these variables:
+
+.. code-block:: yaml
+  :caption: compose.yaml
+  :emphasize-lines: 6, 7
+
+  services:
+    ytdl-sub:
+      image: ghcr.io/jmbannon/ytdl-sub:latest
+      container_name: ytdl-sub
+      environment:
+        - PUID=####
+        - PGID=####
+
+If you had to update these values, run the following command to restart your docker container:
+
+.. code-block:: shell
+
+  docker compose restart

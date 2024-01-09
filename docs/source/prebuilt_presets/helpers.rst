@@ -4,8 +4,8 @@ Helper Presets
 
 Common presets are not usable by themselves- setting one of these as the sole preset of your subscription and attempting to download will not work. But you can add these presets to quickly modify an existing preset to better suit your needs.
 
-Best A/V Quality
-----------------
+Best Video (and audio) Quality
+------------------------------
 
 Add the following preset to download the best available video and audio quality, and remux it into an MP4 container:
 
